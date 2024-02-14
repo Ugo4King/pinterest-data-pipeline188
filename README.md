@@ -24,7 +24,9 @@ The Pinterest Data Pipeline project is a meticulously crafted system aimed at ex
 **Infrastructure:**
 
 **Amazon EC2:** The backbone of the Kafka client machine, Amazon EC2 plays a pivotal role in ensuring the seamless operation and integration of Kafka within the data pipeline ecosystem.
-Workflow Orchestration:
+
+**Workflow Orchestration:**
+
 **Apache Airflow (Using Amazon MWAA):** Task scheduling and orchestration are seamlessly managed by Apache Airflow, powered by Amazon MWAA. This dynamic duo ensures the timely execution of batch processing tasks, thereby orchestrating a symphony of data workflows with unparalleled precision.
 
 **Real-time Data Processing:**
@@ -35,6 +37,7 @@ Workflow Orchestration:
 **Amazon API Gateway:** The deployment of a robust REST API through Amazon API Gateway facilitates seamless communication between Amazon MSK and Kinesis. This ensures frictionless data flow and fosters a cohesive ecosystem conducive to innovation.
 
 **Data Transformation and Analysis:**
+
 **Databricks:** Databricks emerges as the undisputed champion for data cleaning, transformation, and analysis. With its prowess in both batch and real-time processing modes, Databricks executes SQL queries with finesse, unraveling key metrics and unveiling profound insights hidden within the vast expanse of processed data.
 
 **Project Structure:**
@@ -43,11 +46,15 @@ Workflow Orchestration:
 Emulates Pinterest post data using meticulously crafted Python scripts, leveraging the power of AWS RDS queries to extract mission-critical information.
 
 2. **Data Ingestion:**
+
 **Batch Processing:** Harnesses the robust capabilities of Kafka (Amazon MSK) to ingest raw Pinterest data and seamlessly route it to designated topics within an S3 bucket, setting the stage for streamlined batch processing in Databricks.
+
 **Real-time Processing:** Leverages the unparalleled efficiency of Amazon Kinesis for ingesting raw Pinterest data as data streams, fueling lightning-fast real-time processing in Databricks.
 
 3. **Data Transformation:**
+
 **Batch Processing:** Executes intricate data cleaning and transformation tasks in Databricks, laying the foundation for meticulous batch processing of extracted data.
+
 **Real-time Processing:** Embarks on a journey of real-time data cleaning and transformation within Databricks, ensuring seamless processing of streaming data with unparalleled efficiency.
 
 4. **Analysis and Insights:**
@@ -56,10 +63,10 @@ Unveils the power of SQL queries in Databricks, unraveling key metrics and unvei
 5. **Task Scheduling and Orchestration:**
 Seamlessly orchestrated by Apache Airflow (Amazon MWAA), batch processing tasks unfold with unparalleled precision, ensuring the timely execution of data workflows and fostering an environment of operational excellence.
 
-Setup and Deployment:
+**Setup and Deployment:**
 Embarking on the journey to replicate and deploy the Pinterest Data Pipeline project entails a meticulous approach:
 
-Python Environment Setup: Lay the groundwork by setting up a Python environment with the necessary dependencies for executing Pinterest posting emulation and facilitating interactions with Kafka and AWS Kinesis.
+**Python Environment Setup:** Lay the groundwork by setting up a Python environment with the necessary dependencies for executing Pinterest posting emulation and facilitating interactions with Kafka and AWS Kinesis.
 
 **Kafka (Using Amazon MSK):**
 Kafka serves as a powerful data ingestion tool, and setting it up with Amazon Managed Streaming for Apache Kafka (Amazon MSK) is straightforward:
@@ -151,8 +158,9 @@ Amazon API Gateway simplifies the deployment of REST APIs, enabling seamless com
 
 **Deploy API:**
 
-Once your API is defined, deploy it to a stage (e.g., "dev", "prod") for testing and production use.
-Generate an API endpoint URL that can be used to interact with your API.
+Once your API is defined, 
+1. deploy it to a stage (e.g., "dev", "prod") for testing and production use.
+2. Generate an API endpoint URL that can be used to interact with your API.
 
 **Integrate with Other Services:**
 
@@ -184,24 +192,19 @@ Create jobs to schedule and execute these notebooks as batch processing tasks or
 Usage:
 Once deployed, the Pinterest Data Pipeline project stands ready to revolutionize data processing and analysis:
 
-Data Emulation and Extraction: Emulate Pinterest post data and extract mission-critical information using meticulously crafted Python scripts.
+**Data Emulation and Extraction:** Emulate Pinterest post data and extract mission-critical information using meticulously crafted Python scripts.
 
-Data Ingestion and Processing: Ingest the extracted data into the system using either Kafka (for batch processing) or Amazon Kinesis (for real-time processing), fueling seamless processing and analysis.
+**Data Ingestion and Processing:** Ingest the extracted data into the system using either Kafka (for batch processing) or Amazon Kinesis (for real-time processing), fueling seamless processing and analysis.
 
-Data Transformation and Analysis: Embark on a journey of data transformation and analysis within Databricks, executing intricate SQL queries to unravel key metrics and unveil profound insights from the processed data, empowering stakeholders with actionable insights and facilitating data-driven decision-making.
+**Data Transformation and Analysis:** Embark on a journey of data transformation and analysis within Databricks, executing intricate SQL queries to unravel key metrics and unveil profound insights from the processed data, empowering stakeholders with actionable insights and facilitating data-driven decision-making.
 
-Contributors:
-[Your Name]
-[Additional Contributors, if applicable]
-License:
-This project is licensed under [License Name]. For more details, please refer to the LICENSE.md file included in the project repository.
+**Contributors:**
+
+
+**License:**
+This project is licensed under [License]. For more details, please refer to the LICENSE.md file included in the project repository.
 
 Acknowledgments:
 The Pinterest Data Pipeline project owes its success and innovation to the invaluable contributions and support from the following sources:
 
-[Acknowledgment 1]
-[Acknowledgment 2]
-[Acknowledgment 3]
 
-Support:
-For any inquiries, assistance, or further information regarding the Pinterest Data Pipeline project, please do not hesitate to reach out to [Your Email Address]. Our dedicated team is committed to providing comprehensive support and ensuring a seamless experience throughout your journey with the project.
