@@ -267,6 +267,7 @@ In the role that is just created, navigate to the Trust relationship and chose T
     ]
 }```
 Create a VPN endpoint to S3 and create a custom plugin by downloading the `Confluent.io Amazon S3 Connector` and then move it to the S3.
+
 ```# assume admin user privileges
 sudo -u ec2-user -i
 # create directory where we will save our connector 
@@ -274,15 +275,19 @@ mkdir kafka-connect-s3 && cd kafka-connect-s3
 # download connector from Confluent
 wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.0.3/confluentinc-kafka-connect-s3-10.0.3.zip
 # copy connector to our S3 bucket
-aws s3 cp ./confluentinc-kafka-connect-s3-10.0.3.zip s3://<BUCKET_NAME>/kafka-connect-s3/```
+aws s3 cp ./confluentinc-kafka-connect-s3-10.0.3.zip s3://<BUCKET_NAME>/kafka-connect-s3/
+```
+
 ![dt](/workspaces/pinterest-data-pipeline188/Plugin ZIP.png) 
 
 Open the MSK console and select Custom plugins under the MSK Connect section on the left side of the console. Choose Create custom plugin.
 
 In the list of buckets, find the bucket where you upload the Confluent connector ZIP file. Then, in the list of objects in that bucket select the ZIP file and select the Choose button. Give the plugin a name and press **Create custom plugin**.
+
 ![dt](/workspaces/pinterest-data-pipeline188/Custom plugin.png)
 
 copy the following code into the connector configuration settings 
+
 ```connector.class=io.confluent.connect.s3.S3SinkConnector
 # same region as our bucket and cluster
 s3.region=us-east-1
