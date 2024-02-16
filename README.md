@@ -278,13 +278,13 @@ wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connec
 aws s3 cp ./confluentinc-kafka-connect-s3-10.0.3.zip s3://<BUCKET_NAME>/kafka-connect-s3/
 ```
 
-![dt](./dt_screen/Plugin ZIP.png) 
+[dt](./dt_screen/Plugin ZIP.png) 
 
 Open the MSK console and select Custom plugins under the MSK Connect section on the left side of the console. Choose Create custom plugin.
 
 In the list of buckets, find the bucket where you upload the Confluent connector ZIP file. Then, in the list of objects in that bucket select the ZIP file and select the Choose button. Give the plugin a name and press **Create custom plugin**.
 
-![dt](./dt_screen/Custom plugin.png)
+[dt](./dt_screen/Custom plugin.png)
 
 copy the following code into the connector configuration settings 
 
