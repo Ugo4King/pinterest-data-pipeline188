@@ -282,7 +282,8 @@ Open the MSK console and select Custom plugins under the MSK Connect section on 
 In the list of buckets, find the bucket where you upload the Confluent connector ZIP file. Then, in the list of objects in that bucket select the ZIP file and select the Choose button. Give the plugin a name and press **Create custom plugin**.
 ![dt](/workspaces/pinterest-data-pipeline188/Custom plugin.png)
 
-copy the following code into the connector configuration settings ```connector.class=io.confluent.connect.s3.S3SinkConnector
+copy the following code into the connector configuration settings 
+```connector.class=io.confluent.connect.s3.S3SinkConnector
 # same region as our bucket and cluster
 s3.region=us-east-1
 flush.size=1
@@ -296,7 +297,8 @@ value.converter.schemas.enable=false
 value.converter=org.apache.kafka.connect.json.JsonConverter
 storage.class=io.confluent.connect.s3.storage.S3Storage
 key.converter=org.apache.kafka.connect.storage.StringConverter
-s3.bucket.name=<BUCKET_NAME>```
+s3.bucket.name=<BUCKET_NAME>
+```
 
 **API Gateway Deployment:**
 
