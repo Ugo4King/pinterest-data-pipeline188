@@ -104,16 +104,49 @@ Amazon EC2 is used to set up the Kafka client machine for seamless operation and
 4. Review and launch the instance.
 (**NB:** for the purpose of this project we are using already provisioned EC2 so we only SSH into it)
 
+**Connecting to Ec2 using SSH**
+1. create a `.pam` file in your local directory that will contain the key pair for the instance you are lunching.
+2. Set the neccessary permission by running the following code on your localhost terminal `chmod 400 /path/to/private_key.pem.`
+3. navigate to the directory with the `.pam` file and run the SSH code `ssh -i "private_key.pem" ec2-user@public_dns_name.` or run it in any directory by providing the right path to th`.pam` file `ssh -i /path/to/private_key.pem ec2-user@public_dns_name.`
+
 **Install Kafka Client:**
 
 1. SSH into the EC2 instance using your preferred SSH client.
-2. Install Kafka client dependencies using package managers like apt or yum.
-3. Configure Kafka client properties such as bootstrap servers, security settings, etc., in the server.properties file.
+2. Install Kafka client dependencies using package managers like apt or yum. (i.e install java-1.8.0 using `sudo yum install java-1.8.0`)
+3. Download Apache Kafka using the following `wget https://archive.apache.org/dist/kafka/2.8.1/kafka_2.12-2.8.1.tgz` and extract the zipped file using `tar -xzf kafka_2.12-2.8.1.tgz`.
+4. Configure your Kafka client to use AWS IAM authentication to the cluster, by adjusting server.properties file. firstly navigate to the kafka intalled directory and cd into the lib folder and download the **IAM MSK authentication package** by running the following command `
+wget https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.5/aws-msk-iam-auth-1.1.5-all.jar`. 
+5. set up the class path environment by running the following command `export CLASSPATH=/home/ec2-user/kafka_2.12-2.8.1/libs/aws-msk-iam-auth-1.1.5-all.jar`
 
+
+**Configure Kafka client to use AWS IAM**
+1. Navigate to kafka installation folder and cd into bin and run the following command `nano clinent.properties`
+2. Ensure that it contains
+```# Sets up TLS for encryption and SASL for authN.
+security.protocol = SASL_SSL
+
+# Identifies the SASL mechanism to use.
+sasl.mechanism = AWS_MSK_IAM
+
+# Binds SASL client implementation.
+sasl.jaas.config = software.amazon.msk.auth.iam.IAMLoginModule required awsRoleArn="Your Access Role";
+
+# Encapsulates constructing a SigV4 signature based on extracted credentials.
+# The SASL client bound by "sasl.jaas.config" invokes this class.
+sasl.client.callback.handler.class = software.amazon.msk.auth.iam.IAMClientCallbackHandler
+
+# Additional line of configuration
+# Specify the AWS region for the MSK cluster
+bootstrap.servers = your-broker-hostname.amazonaws.com:9094
+sasl.region = us-east-1
+```
 **Connect to Kafka Cluster:**
 
-Use command-line tools like kafka-console-producer and kafka-console-consumer to produce and consume messages, respectively.
-Connect to the Kafka cluster using the bootstrap servers provided in the Amazon MSK console.
+1. Connect to the Kafka cluster using the bootstrap servers provided in the Amazon MSK console. 
+2. Create a kafka topic by running the following command `./kafka-topics.sh --bootstrap-server BootstrapServerString --command-config client.properties --create --topic <topic_name>`. eunsuer you are in kafka/bin directory before running the code. also change the bootstrap-server and kafka topic.
+3. Create and Runn a producer by running the following command `./kafka-console-producer.sh --bootstrap-server BootstrapServerString --producer.config client.properties --group students --topic <topic_name>`
+4. Create and run consumer by running the following command `./kafka-console-consumer.sh --bootstrap-server BootstrapServerString --consumer.config client.properties --group students --topic <topic_name> --from-beginning`
+
 
 **Apache Airflow (Using Amazon MWAA):**
 Apache Airflow setup with Amazon Managed Workflows for Apache Airflow (MWAA) simplifies task scheduling and orchestration:
@@ -164,9 +197,132 @@ Once your API is defined,
 
 **Integrate with Other Services:**
 
-1. Integrate your API with other AWS services like Amazon MSK and Amazon Kinesis using AWS Lambda functions, HTTP integrations, etc.
+****Configuring Data Flow from API to S3:**
 
-2. Configure permissions and security settings to control access to your API resources.
+**API Gateway Integration:**
+
+1. Configure your API Gateway resource to integrate with an AWS service directly using an HTTP integration.
+2. Choose the AWS region where your Amazon MSK cluster is deployed.
+3. Select "Managed Streaming for Apache Kafka" as the AWS service.
+4. Specify the Kafka cluster ARN and the Kafka topic to which you want to publish data.
+5. Choose Amazon S3 as the integration type and specify the details of the S3 bucket where data will be saved.
+
+**S3 Bucket Configuration:**
+
+1. Create an S3 bucket in the AWS Management Console to store the incoming data.
+2. Configure the bucket's permissions to allow write access from the API Gateway.
+
+**Create an IAM role that can write to the destination bucket**
+Navigate to the IAM console, and select Roles under the Access management section. Choose Create role to create a new IAM role.
+
+Under Trusted entity type, select AWS service, and under the Use case field select S3 in the Use cases for other AWS services field.
+
+create a policy and include the following json ```{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket",
+                "s3:DeleteObject",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<DESTINATION_BUCKET>",
+                "arn:aws:s3:::<DESTINATION_BUCKET>/*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucketMultipartUploads",
+                "s3:AbortMultipartUpload",
+                "s3:ListMultipartUploadParts"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor2",
+            "Effect": "Allow",
+            "Action": "s3:ListAllMyBuckets",
+            "Resource": "*"
+        }
+    ]
+}```
+
+In the role that is just created, navigate to the Trust relationship and chose Trust entities and add the following trust policy ```{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "kafkaconnect.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}```
+Create a VPN endpoint to S3 and create a custom plugin by downloading the `Confluent.io Amazon S3 Connector` and then move it to the S3.
+```# assume admin user privileges
+sudo -u ec2-user -i
+# create directory where we will save our connector 
+mkdir kafka-connect-s3 && cd kafka-connect-s3
+# download connector from Confluent
+wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.0.3/confluentinc-kafka-connect-s3-10.0.3.zip
+# copy connector to our S3 bucket
+aws s3 cp ./confluentinc-kafka-connect-s3-10.0.3.zip s3://<BUCKET_NAME>/kafka-connect-s3/```
+![dt](/workspaces/pinterest-data-pipeline188/Plugin ZIP.png) 
+
+Open the MSK console and select Custom plugins under the MSK Connect section on the left side of the console. Choose Create custom plugin.
+
+In the list of buckets, find the bucket where you upload the Confluent connector ZIP file. Then, in the list of objects in that bucket select the ZIP file and select the Choose button. Give the plugin a name and press **Create custom plugin**.
+![dt](/workspaces/pinterest-data-pipeline188/Custom plugin.png)
+
+copy the following code into the connector configuration settings ```connector.class=io.confluent.connect.s3.S3SinkConnector
+# same region as our bucket and cluster
+s3.region=us-east-1
+flush.size=1
+schema.compatibility=NONE
+tasks.max=3
+# include nomeclature of topic name, given here as an example will read all data from topic names starting with msk.topic....
+topics.regex=<YOUR_UUID>.*
+format.class=io.confluent.connect.s3.format.json.JsonFormat
+partitioner.class=io.confluent.connect.storage.partitioner.DefaultPartitioner
+value.converter.schemas.enable=false
+value.converter=org.apache.kafka.connect.json.JsonConverter
+storage.class=io.confluent.connect.s3.storage.S3Storage
+key.converter=org.apache.kafka.connect.storage.StringConverter
+s3.bucket.name=<BUCKET_NAME>```
+
+**API Gateway Deployment:**
+
+1. Deploy your API Gateway to make it publicly accessible.
+2. Test the API by sending data to the configured endpoint.
+3. Verify that the data is successfully saved to the designated S3 bucket.
+
+**Configuring Data Flow from API to AWS Kinesis:**
+
+**API Gateway Integration:**
+
+1. Create an IAM role for the API access to Kinesis that assums `AmazonKinesisFullAccessRole`.
+create a Trust relationship and in Trust entities add the following trust policy: ![dt](/workspaces/pinterest-data-pipeline188/Kinesis-role.png)
+2. Configure your API Gateway resource to integrate with Amazon Kinesis using an HTTP integration.
+
+3. Specify the details of the AWS Kinesis data stream where data will be sent.
+
+**AWS Kinesis Data Stream:**
+
+Configure the stream's permissions to allow write access from the API Gateway.
+
+**API Gateway Deployment:**
+
+1. Deploy your API Gateway to make it publicly accessible.
+2. Test the API by sending data to the configured endpoint.
+3. Verify that the data is successfully sent to the AWS Kinesis data stream.
 
 **Databricks:**
 
