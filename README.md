@@ -12,6 +12,8 @@ The Pinterest Data Pipeline project is a meticulously crafted system aimed at ex
 
 **Python:** The project harnesses the power of Python for executing Pinterest posting emulation via AWS RDS queries. Additionally, it facilitates seamless interactions with Kafka and AWS Kinesis through meticulously crafted API requests.
 
+**SQL:** the project will leverage on the power of sql to performe analysis of the data and to run key queries airmed at understaing the data.
+
 **Data Ingestion:**
 
 **Kafka (Using Amazon MSK):** Kafka stands at the forefront of data ingestion, gracefully handling the raw Pinterest data influx and proficiently routing it to designated topics within an S3 bucket. This setup ensures streamlined batch processing in Databricks.
@@ -199,7 +201,7 @@ Once your API is defined,
 
 **Integrate with Other Services:**
 
-****Configuring Data Flow from API to S3:**
+****Configuring Data Flow from API-MSK-S3:**
 
 **API Gateway Integration:**
 
@@ -207,7 +209,7 @@ Once your API is defined,
 2. Choose the AWS region where your Amazon MSK cluster is deployed.
 3. Select "Managed Streaming for Apache Kafka" as the AWS service.
 4. Specify the Kafka cluster ARN and the Kafka topic to which you want to publish data.
-5. Choose Amazon S3 as the integration type and specify the details of the S3 bucket where data will be saved.
+5. Choose Amazon S3 as the integration type and specify the details of the S3 bucket where data will be saved. ![dt](./dt_screen/api-1.png), ![dt](./dt_screen/api-2.png), ![dt](./dt_screen/api-3.png), ![dt](./dt_screen/api-4.png),![dt](./dt_screen/api-5.png),![dt](./dt_screen/api-6.png),![dt](./dt_screen/api-7.png),
 
 **S3 Bucket Configuration:**
 
@@ -320,12 +322,32 @@ s3.bucket.name=<BUCKET_NAME>
 1. Create an IAM role for the API access to Kinesis that assums `AmazonKinesisFullAccessRole`.
 create a Trust relationship and in Trust entities add the following trust policy: ![dt](./dt_screen/Kinesis-role.png)
 2. Configure your API Gateway resource to integrate with Amazon Kinesis using an HTTP integration.
+    - Create resource ![dt](./dt_screen/api-1.png)
+    - Name the resources streams ![dt](./dt_screen/api-R.png)
+    - edit the integration type to include: ![dt](./dt_screen/api-r1.png),![dt](./dt_screen/api-r2.png),![dt](./dt_screen/api-r3.png),![dt](./dt_screen/api-r4.png),
+    - Create a child resources under the streams with resource name `{stream-name}`. ![dt](./dt_screen/api-r5),
+    - under the child resources create the following resources: ![dt](./dt_screen/api-r6.png)
 
 3. Specify the details of the AWS Kinesis data stream where data will be sent.
 
 **AWS Kinesis Data Stream:**
 
-Configure the stream's permissions to allow write access from the API Gateway.
+Configure the stream's permissions to allow write access from the API Gateway by ensuring that the following is included in the IAM policy.
+
+```{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+            ],
+            "Resource": "arn:aws:kinesis:region:account-id:stream/stream-name"
+        }
+    ]
+}
+```
 
 **API Gateway Deployment:**
 
@@ -341,7 +363,7 @@ Databricks is utilized for data cleaning, transformation, and analysis tasks in 
 
 1. Navigate to the Azure Databricks portal.
 2. Create a new workspace and configure the workspace settings, including the Azure region, pricing tier, etc.
-3. Invite collaborators and set up access controls as needed.
+3. Invite collaborators and set up access controls as needed. (**NB:** we are using an already created workspace)
 
 **Create Clusters:**
 
@@ -354,7 +376,7 @@ Databricks is utilized for data cleaning, transformation, and analysis tasks in 
 Develop notebooks for data cleaning, transformation, and analysis tasks using languages like Python.
 Create jobs to schedule and execute these notebooks as batch processing tasks or set up streaming jobs for real-time processing.
 
-Usage:
+**Usage:**
 Once deployed, the Pinterest Data Pipeline project stands ready to revolutionize data processing and analysis:
 
 **Data Emulation and Extraction:** Emulate Pinterest post data and extract mission-critical information using meticulously crafted Python scripts.
@@ -363,13 +385,7 @@ Once deployed, the Pinterest Data Pipeline project stands ready to revolutionize
 
 **Data Transformation and Analysis:** Embark on a journey of data transformation and analysis within Databricks, executing intricate SQL queries to unravel key metrics and unveil profound insights from the processed data, empowering stakeholders with actionable insights and facilitating data-driven decision-making.
 
-**Contributors:**
-
-
 **License:**
 This project is licensed under [License]. For more details, please refer to the LICENSE.md file included in the project repository.
-
-Acknowledgments:
-The Pinterest Data Pipeline project owes its success and innovation to the invaluable contributions and support from the following sources:
 
 
