@@ -325,7 +325,7 @@ create a Trust relationship and in Trust entities add the following trust policy
     - Create resource ![dt](./dt_screen/api-1.png)
     - Name the resources streams ![dt](./dt_screen/api-R.png)
     - edit the integration type to include: ![dt](./dt_screen/api-r1.png),![dt](./dt_screen/api-r2.png),![dt](./dt_screen/api-r3.png),![dt](./dt_screen/api-r4.png),
-    - Create a child resources under the streams with resource name `{stream-name}`. ![dt](./dt_screen/api-r5),
+    - Create a child resources under the streams with resource name `{stream-name}`. ![dt](./dt_screen/api-r5.png),
     - under the child resources create the following resources: ![dt](./dt_screen/api-r6.png)
 
 3. Specify the details of the AWS Kinesis data stream where data will be sent.
