@@ -5,7 +5,7 @@
 
 The Pinterest Data Pipeline project is a meticulously crafted system aimed at extracting, storing, transforming, and analyzing emulated Pinterest post data. With an emphasis on robustness and efficiency, this project encompasses the creation of two intricately designed data pipelines: one tailored for batch processing and the other fine-tuned for real-time processing of streaming data. The core objective is to provide a hands-on learning experience while mastering a suite of cutting-edge data engineering tools and services.
 
-![dt](./dt_screen/CloudPinterestPipeline.png)
+![dt](./image/CloudPinterestPipeline.png)
 
 **Key Components and Technologies:**
 **Programming Language:**
@@ -209,7 +209,7 @@ Once your API is defined,
 2. Choose the AWS region where your Amazon MSK cluster is deployed.
 3. Select "Managed Streaming for Apache Kafka" as the AWS service.
 4. Specify the Kafka cluster ARN and the Kafka topic to which you want to publish data.
-5. Choose Amazon S3 as the integration type and specify the details of the S3 bucket where data will be saved. ![dt](./dt_screen/api-1.png), ![dt](./dt_screen/api-2.png), ![dt](./dt_screen/api-3.png), ![dt](./dt_screen/api-4.png),![dt](./dt_screen/api-5.png),![dt](./dt_screen/api-6.png),![dt](./dt_screen/api-7.png),
+5. Choose Amazon S3 as the integration type and specify the details of the S3 bucket where data will be saved. ![dt](./image/api-1.png), ![dt](./image/api-2.png), ![dt](./image/api-3.png), ![dt](./image/api-4.png),![dt](./image/api-5.png),![dt](./image/api-6.png),![dt](./image/api-7.png),
 
 **S3 Bucket Configuration:**
 
@@ -282,13 +282,13 @@ wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connec
 aws s3 cp ./confluentinc-kafka-connect-s3-10.0.3.zip s3://<BUCKET_NAME>/kafka-connect-s3/
 ```
 
-![dt](./dt_screen/Plugin-zip.png) 
+![dt](./image/Plugin-zip.png) 
 
 Open the MSK console and select Custom plugins under the MSK Connect section on the left side of the console. Choose Create custom plugin.
 
 In the list of buckets, find the bucket where you upload the Confluent connector ZIP file. Then, in the list of objects in that bucket select the ZIP file and select the Choose button. Give the plugin a name and press **Create custom plugin**.
 
-![dt](./dt_screen/Custom-plugin.png)
+![dt](./image/Custom-plugin.png)
 
 copy the following code into the connector configuration settings 
 
@@ -320,13 +320,13 @@ s3.bucket.name=<BUCKET_NAME>
 **API Gateway Integration:**
 
 1. Create an IAM role for the API access to Kinesis that assums `AmazonKinesisFullAccessRole`.
-create a Trust relationship and in Trust entities add the following trust policy: ![dt](./dt_screen/Kinesis-role.png)
+create a Trust relationship and in Trust entities add the following trust policy: ![dt](./image/Kinesis-role.png)
 2. Configure your API Gateway resource to integrate with Amazon Kinesis using an HTTP integration.
-    - Create resource ![dt](./dt_screen/api-1.png)
-    - Name the resources streams ![dt](./dt_screen/api-R.png)
-    - edit the integration type to include: ![dt](./dt_screen/api-r1.png),![dt](./dt_screen/api-r2.png),![dt](./dt_screen/api-r3.png),![dt](./dt_screen/api-r4.png),
-    - Create a child resources under the streams with resource name `{stream-name}`. ![dt](./dt_screen/api-r5.png),
-    - under the child resources create the following resources: ![dt](./dt_screen/api-r6.png)
+    - Create resource ![dt](./image/api-1.png)
+    - Name the resources streams ![dt](./image/api-R.png)
+    - edit the integration type to include: ![dt](./image/api-r1.png),![dt](./image/api-r2.png),![dt](./image/api-r3.png),![dt](./image/api-r4.png),
+    - Create a child resources under the streams with resource name `{stream-name}`. ![dt](./image/api-r5.png),
+    - under the child resources create the following resources: ![dt](./image/api-r6.png)
 
 3. Specify the details of the AWS Kinesis data stream where data will be sent.
 
