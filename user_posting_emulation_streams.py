@@ -97,20 +97,13 @@ def run_infinite_post_data_loop():
             })
 
             headers = {'Content-Type': 'application/json'}
-            # response_pin = requests.request("PUT", f"{base_invoke_url}{stream_name_pin}/record", headers=headers, data=payload_pin)
-            # response_geo = requests.request("PUT", f"{base_invoke_url}{stream_name_geo}/record", headers=headers, data=payload_geo)
+            response_pin = requests.request("PUT", f"{base_invoke_url}{stream_name_pin}/record", headers=headers, data=payload_pin)
+            response_geo = requests.request("PUT", f"{base_invoke_url}{stream_name_geo}/record", headers=headers, data=payload_geo)
             response_user = requests.request("PUT", f"{base_invoke_url}{stream_name_user}/record", headers=headers, data=payload_user)
-            # print(response_pin.json())
-            # print(response_pin.status_code, response_geo.status_code, response_user.status_code)
-            # print(response_geo.json())
-            # print(response_pin.status_code, response_geo.status_code, response_user.status_code)
+            print(response_pin.json())
+            print(response_geo.json())
             print(response_user.json())
-            # print(response_pin.status_code, response_geo.status_code, response_user.status_code)
-            # response_pin = requests.request("PUT", f"{base_invoke_url}{stream_name_pin}/record", headers=headers, data=payload_pin_2)
-            # print(response_pin.json())
-            print(response_user.status_code)
-            # print(payload_geo)
-           
+            print(response_pin.status_code, response_geo.status_code, response_user.status_code)
 
 if __name__ == "__main__":
     run_infinite_post_data_loop()
