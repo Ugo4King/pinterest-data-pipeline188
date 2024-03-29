@@ -1,187 +1,88 @@
 
-**Pinterest Data Pipeline**
+# Pinterest Data Pipeline
 
-**Project Overview:**
+## Project Overview
 
 The Pinterest Data Pipeline project is a meticulously crafted system aimed at extracting, storing, transforming, and analyzing emulated Pinterest post data. With an emphasis on robustness and efficiency, this project encompasses the creation of two intricately designed data pipelines: one tailored for batch processing and the other fine-tuned for real-time processing of streaming data. The core objective is to provide a hands-on learning experience while mastering a suite of cutting-edge data engineering tools and services.
 
+## Table of Contents
+* [**project Overview**](##Project-Overview)
+* [**Architecture Diagram**](##Architecture-Diagram) 
+* [**Key Components and Technologies**](##Key-Components-and-Technologies)
+* [**Installation, Setup and Deployment**](##Setup-and-Deployment)
+* [**Integrate with Other Services**](##Integrate-with-Other-Services)
+
+## Architecture Diagram
+This is an architecture diagram that depict pinterest end to end ETL process.
+
 ![dt](./image/CloudPinterestPipeline.png)
 
-**Key Components and Technologies:**
+## Key Components and Technologies:
 **Programming Language:**
 
-**Python:** The project harnesses the power of Python for executing Pinterest posting emulation via AWS RDS queries. Additionally, it facilitates seamless interactions with Kafka and AWS Kinesis through meticulously crafted API requests.
+- **Python:** The project harnesses the power of Python for executing Pinterest posting emulation via AWS RDS queries. Additionally, it facilitates seamless interactions with Kafka and AWS Kinesis through meticulously crafted API requests.
+- **SQL:** the project will leverage on the power of sql to performe analysis of the data and to run key queries airmed at understaing the data.
 
-**SQL:** the project will leverage on the power of sql to performe analysis of the data and to run key queries airmed at understaing the data.
+### Data Ingestion:
 
-**Data Ingestion:**
+- **Amazon API Gateway:** The deployment of a robust REST API through Amazon API Gateway facilitates seamless communication between Amazon MSK and Kinesis. This ensures frictionless data flow and fosters a cohesive ecosystem conducive to innovation.
 
-**Kafka (Using Amazon MSK):** Kafka stands at the forefront of data ingestion, gracefully handling the raw Pinterest data influx and proficiently routing it to designated topics within an S3 bucket. This setup ensures streamlined batch processing in Databricks.
+- **Kafka (Using Amazon MSK):** Kafka stands at the forefront of data ingestion, gracefully handling the raw Pinterest data influx and proficiently routing it to designated topics within an S3 bucket. This technology ensures that coming from API gateway passes through the designated kafka topic to a destination in S3. This will help to streamlined batch processing using Databricks. To configure kafka using Amazon MSk follow the instruction provided in this official documentation [here](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)
 
-**Step-by-Step Setup:**
+- **Amazon EC2:** The backbone of the Kafka client machine, Amazon EC2 plays a pivotal role in ensuring the seamless operation and integration of Kafka within the data pipeline ecosystem.
 
-1.  Provision Amazon MSK cluster through the AWS Management Console.
-2.  Configure your MSK cluster settings, including the number of brokers, instance types, security settings, etc.
-3.  Create topics within your MSK cluster to organize incoming data.
-4.  Update Kafka configurations in your application code to connect to the provisioned MSK cluster.
+### Workflow Orchestration:
 
-**Infrastructure:**
+- **Apache Airflow (Using Amazon MWAA):** Task scheduling and orchestration are seamlessly managed by Apache Airflow, powered by Amazon MWAA. This dynamic duo ensures the timely execution of batch processing tasks, thereby orchestrating a symphony of data workflows with unparalleled precision.
 
-**Amazon EC2:** The backbone of the Kafka client machine, Amazon EC2 plays a pivotal role in ensuring the seamless operation and integration of Kafka within the data pipeline ecosystem.
+### Real-time Data Processing:
 
-**Workflow Orchestration:**
+- **Amazon Kinesis:** Real-time data processing reaches new heights with Amazon Kinesis, serving as the bedrock for ingesting raw Pinterest data as data streams. This enables lightning-fast real-time processing in Databricks, empowering stakeholders with actionable insights in the blink of an eye.
 
-**Apache Airflow (Using Amazon MWAA):** Task scheduling and orchestration are seamlessly managed by Apache Airflow, powered by Amazon MWAA. This dynamic duo ensures the timely execution of batch processing tasks, thereby orchestrating a symphony of data workflows with unparalleled precision.
+### Data Transformation and Analysis:
 
-**Real-time Data Processing:**
+- **Databricks:** Databricks is one of the formost tools for data cleaning, transformation, and analysis. It enables both batch and real-time processing modes, Databricks executes multiple programming languages e.g python, and SQL etc providing oppurtunity for profound insights hidden within the large amount of processed data.
 
-**Amazon Kinesis:** Real-time data processing reaches new heights with Amazon Kinesis, serving as the bedrock for ingesting raw Pinterest data as data streams. This enables lightning-fast real-time processing in Databricks, empowering stakeholders with actionable insights in the blink of an eye.
-
-**API Gateway:**
-**Amazon API Gateway:** The deployment of a robust REST API through Amazon API Gateway facilitates seamless communication between Amazon MSK and Kinesis. This ensures frictionless data flow and fosters a cohesive ecosystem conducive to innovation.
-
-**Data Transformation and Analysis:**
-
-**Databricks:** Databricks emerges as the undisputed champion for data cleaning, transformation, and analysis. With its prowess in both batch and real-time processing modes, Databricks executes SQL queries with finesse, unraveling key metrics and unveiling profound insights hidden within the vast expanse of processed data.
-
-**Project Structure:**
-
-1. **Data Extraction:**
-Emulates Pinterest post data using meticulously crafted Python scripts, leveraging the power of AWS RDS queries to extract mission-critical information.
-
-2. **Data Ingestion:**
-
-**Batch Processing:** Harnesses the robust capabilities of Kafka (Amazon MSK) to ingest raw Pinterest data and seamlessly route it to designated topics within an S3 bucket, setting the stage for streamlined batch processing in Databricks.
-
-**Real-time Processing:** Leverages the unparalleled efficiency of Amazon Kinesis for ingesting raw Pinterest data as data streams, fueling lightning-fast real-time processing in Databricks.
-
-3. **Data Transformation:**
-
-**Batch Processing:** Executes intricate data cleaning and transformation tasks in Databricks, laying the foundation for meticulous batch processing of extracted data.
-
-**Real-time Processing:** Embarks on a journey of real-time data cleaning and transformation within Databricks, ensuring seamless processing of streaming data with unparalleled efficiency.
-
-4. **Analysis and Insights:**
-Unveils the power of SQL queries in Databricks, unraveling key metrics and unveiling profound insights from the processed data. This facilitates data-driven decision-making and empowers stakeholders with actionable insights.
-
-5. **Task Scheduling and Orchestration:**
-Seamlessly orchestrated by Apache Airflow (Amazon MWAA), batch processing tasks unfold with unparalleled precision, ensuring the timely execution of data workflows and fostering an environment of operational excellence.
-
-**Setup and Deployment:**
+## Installation, Setup and Deployment
 Embarking on the journey to replicate and deploy the Pinterest Data Pipeline project entails a meticulous approach:
 
 **Python Environment Setup:** Lay the groundwork by setting up a Python environment with the necessary dependencies for executing Pinterest posting emulation and facilitating interactions with Kafka and AWS Kinesis.
 
-**Kafka (Using Amazon MSK):**
-Kafka serves as a powerful data ingestion tool, and setting it up with Amazon Managed Streaming for Apache Kafka (Amazon MSK) is straightforward:
+**VPC:** AWS VPC offers a secure, scalable, and customizable networking environment for deploying and managing your AWS resources. To create and configure VPC follow the documentation [here](https://docs.aws.amazon.com/workspaces/latest/adminguide/amazon-workspaces-vpc.html)
 
-**Provision Amazon MSK Cluster:**
+**Amazon EC2:** is a scalable web service by AWS enabling users to deploy and manage virtual servers in the cloud, offering flexibility, reliability, and cost-effectiveness for various computing needs. In this project it is used to set up the Kafka client machine for seamless operation and integration with Kafka. The step by step approach on how to deploy an EC2 can be found [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/get-set-up-for-amazon-ec2.html) or follow these steps to:
 
-1. Navigate to the AWS Management Console and search for "MSK".
-2. Click on "Create cluster" and follow the setup wizard.
-3. Choose a suitable deployment mode (Single-broker, Multi-broker, or Dedicated Zookeeper).
-4. Configure your cluster settings, including the number of brokers, instance types, security settings, etc.
-5. Review and confirm your settings, then create the cluster.
+[***Launch EC2 Instance***](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/Amazon-EC2)
 
-**Create Kafka Topics:**
+[**Connect to EC2 using SSH**](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/Amazon-EC2)
 
-Once the cluster is provisioned, 
-1. Navigate to the Amazon MSK console.
-2. Select your cluster and navigate to the "Kafka settings" tab.
-3. Click on "Create topic" and specify the topic name, number of partitions, replication factor, etc.
-4. Create topics as needed to organize incoming data.
+[**Install Kafka Client on EC2**](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/Amazon-EC2)
 
-**Update Kafka Configurations:**
+**S3:** is a scalable object storage service by AWS, providing secure, durable, and highly available storage for a wide range of data types and applications. Follow [here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html) to configure and create S3 .
 
-Update Kafka configurations in your application code to connect to the provisioned MSK cluster.
-Configure producers to write data to the specified topics and consumers to read data from these topics.
+**Amazon MSK:** is a fully managed service by AWS for running Apache Kafka, simplifying the setup, scaling, and management of Kafka clusters for streaming data applications. Deployment steps can be found [here](https://docs.aws.amazon.com/msk/latest/developerguide/before-you-begin.html).  
 
-**Amazon EC2:**
+  [Provision Amazon MSK Cluster](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/pinterest_technology_set_up) 
 
-Amazon EC2 is used to set up the Kafka client machine for seamless operation and integration with Kafka:
+[Create Kafka Topics](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/pinterest_technology_set_up)
 
-***Launch EC2 Instance:***
+[Configure Kafka client to use AWS IAM](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/configure_kafka)
 
-1. Navigate to the AWS Management Console and search for "EC2".
-2. Click on "Launch Instance" and choose an Amazon Machine Image (AMI) suitable for your requirements.
-3. Select an instance type, configure instance details, add storage, configure security groups, etc.
-4. Review and launch the instance.
-(**NB:** for the purpose of this project we are using already provisioned EC2 so we only SSH into it)
+[Connect to Kafka Cluster](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/configure_kafka)
 
-**Connecting to Ec2 using SSH**
-1. create a `.pam` file in your local directory that will contain the key pair for the instance you are lunching.
-2. Set the neccessary permission by running the following code on your localhost terminal `chmod 400 /path/to/private_key.pem.`
-3. navigate to the directory with the `.pam` file and run the SSH code `ssh -i "private_key.pem" ec2-user@public_dns_name.` or run it in any directory by providing the right path to th`.pam` file `ssh -i /path/to/private_key.pem ec2-user@public_dns_name.`
+**Apache Airflow (Using Amazon MWAA):** is an AWS service offering managed Apache Airflow environments, simplifying the orchestration, scheduling, and monitoring of data workflows for analytics and data processing tasks. details of deployment can be found [here](https://docs.aws.amazon.com/mwaa/latest/userguide/create-environment.html)
 
-**Install Kafka Client:**
+[**Create MWAA Environment:**](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/Amazon_airflow)
 
-1. SSH into the EC2 instance using your preferred SSH client.
-2. Install Kafka client dependencies using package managers like apt or yum. (i.e install java-1.8.0 using `sudo yum install java-1.8.0`)
-3. Download Apache Kafka using the following `wget https://archive.apache.org/dist/kafka/2.8.1/kafka_2.12-2.8.1.tgz` and extract the zipped file using `tar -xzf kafka_2.12-2.8.1.tgz`.
-4. Configure your Kafka client to use AWS IAM authentication to the cluster, by adjusting server.properties file. firstly navigate to the kafka intalled directory and cd into the lib folder and download the **IAM MSK authentication package** by running the following command `
-wget https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.5/aws-msk-iam-auth-1.1.5-all.jar`. 
-5. set up the class path environment by running the following command `export CLASSPATH=/home/ec2-user/kafka_2.12-2.8.1/libs/aws-msk-iam-auth-1.1.5-all.jar`
+[**Configure DAGs**](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/Amazon_airflow)
 
-
-**Configure Kafka client to use AWS IAM**
-1. Navigate to kafka installation folder and cd into bin and run the following command `nano clinent.properties`
-2. Ensure that it contains
-```# Sets up TLS for encryption and SASL for authN.
-security.protocol = SASL_SSL
-
-# Identifies the SASL mechanism to use.
-sasl.mechanism = AWS_MSK_IAM
-
-# Binds SASL client implementation.
-sasl.jaas.config = software.amazon.msk.auth.iam.IAMLoginModule required awsRoleArn="Your Access Role";
-
-# Encapsulates constructing a SigV4 signature based on extracted credentials.
-# The SASL client bound by "sasl.jaas.config" invokes this class.
-sasl.client.callback.handler.class = software.amazon.msk.auth.iam.IAMClientCallbackHandler
-
-# Additional line of configuration
-# Specify the AWS region for the MSK cluster
-bootstrap.servers = your-broker-hostname.amazonaws.com:9094
-sasl.region = us-east-1
-```
-**Connect to Kafka Cluster:**
-
-1. Connect to the Kafka cluster using the bootstrap servers provided in the Amazon MSK console. 
-2. Create a kafka topic by running the following command `./kafka-topics.sh --bootstrap-server BootstrapServerString --command-config client.properties --create --topic <topic_name>`. eunsuer you are in kafka/bin directory before running the code. also change the bootstrap-server and kafka topic.
-3. Create and Runn a producer by running the following command `./kafka-console-producer.sh --bootstrap-server BootstrapServerString --producer.config client.properties --group students --topic <topic_name>`
-4. Create and run consumer by running the following command `./kafka-console-consumer.sh --bootstrap-server BootstrapServerString --consumer.config client.properties --group students --topic <topic_name> --from-beginning`
-
-
-**Apache Airflow (Using Amazon MWAA):**
-Apache Airflow setup with Amazon Managed Workflows for Apache Airflow (MWAA) simplifies task scheduling and orchestration:
-
-**Create MWAA Environment:**
-
-1. Navigate to the Amazon MWAA console.
-2. Click on "Create environment" and follow the setup wizard.
-3. Choose a name for your environment, select a VPC and subnet, configure networking settings, etc.
-4. Review and create the environment.
-
-**Configure DAGs:**
-
-1. Upload your DAG (Directed Acyclic Graph) Python scripts to the MWAA environment.
-2. Define tasks and dependencies within your DAG scripts.
-3. Use MWAA environment variables to pass configuration settings to your DAGs.
-
-**Trigger DAG Runs:**
-
-Once your DAGs are configured, trigger DAG runs manually or set up schedule intervals for automatic execution.
-Monitor DAG runs and view logs through the MWAA console.
+[**Trigger DAG Runs**](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/Amazon_airflow)
 
 **Amazon Kinesis:**
 
 Amazon Kinesis is used for real-time data ingestion, and setting it up involves a few simple steps:
 
-**Create Kinesis Data Stream:**
-
-1. Navigate to the Amazon Kinesis console.
-2. Click on "Create data stream" and specify the stream name, number of shards, etc.
-3. Create the data stream to start ingesting data.
+[**Create Kinesis Data Stream**](https://github.com/Ugo4King/pinterest-data-pipeline188/wiki/Amazon_airflow)
 
 **Amazon API Gateway:**
 
@@ -199,7 +100,7 @@ Once your API is defined,
 1. deploy it to a stage (e.g., "dev", "prod") for testing and production use.
 2. Generate an API endpoint URL that can be used to interact with your API.
 
-**Integrate with Other Services:**
+## Integrate with Other Services
 
 ****Configuring Data Flow from API-MSK-S3:**
 
