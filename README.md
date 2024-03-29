@@ -9,7 +9,7 @@ The Pinterest Data Pipeline project is a meticulously crafted system aimed at ex
 * [project Overview](#Project-Overview)
 * [Architecture Diagram](#Architecture-Diagram) 
 * [Key Components and Technologies](#Key-Components-and-Technologies)
-* [Installation Setup and Deployment](#Setup-and-Deployment)
+* [Installation Setup and Deployment](#Installation-Setup-and-Deployment)
 * [Integrate with Other Services](#Integrate-with-Other-Services)
 
 ## Architecture Diagram
