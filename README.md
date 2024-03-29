@@ -6,11 +6,11 @@
 The Pinterest Data Pipeline project is a meticulously crafted system aimed at extracting, storing, transforming, and analyzing emulated Pinterest post data. With an emphasis on robustness and efficiency, this project encompasses the creation of two intricately designed data pipelines: one tailored for batch processing and the other fine-tuned for real-time processing of streaming data. The core objective is to provide a hands-on learning experience while mastering a suite of cutting-edge data engineering tools and services.
 
 ## Table of Contents
-* [**project Overview**](##Project-Overview)
-* [**Architecture Diagram**](##Architecture-Diagram) 
-* [**Key Components and Technologies**](##Key-Components-and-Technologies)
-* [**Installation, Setup and Deployment**](##Setup-and-Deployment)
-* [**Integrate with Other Services**](##Integrate-with-Other-Services)
+* [project Overview](#Project-Overview)
+* [Architecture Diagram](#Architecture-Diagram) 
+* [Key Components and Technologies](#Key-Components-and-Technologies)
+* [Installation, Setup and Deployment](#Setup-and-Deployment)
+* [Integrate with Other Services](#Integrate-with-Other-Services)
 
 ## Architecture Diagram
 This is an architecture diagram that depict pinterest end to end ETL process.
