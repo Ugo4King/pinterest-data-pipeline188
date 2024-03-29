@@ -9,7 +9,7 @@ The Pinterest Data Pipeline project is a meticulously crafted system aimed at ex
 * [project Overview](#Project-Overview)
 * [Architecture Diagram](#Architecture-Diagram) 
 * [Key Components and Technologies](#Key-Components-and-Technologies)
-* [Installation, Setup and Deployment](#Setup-and-Deployment)
+* [Installation Setup and Deployment](#Setup-and-Deployment)
 * [Integrate with Other Services](#Integrate-with-Other-Services)
 
 ## Architecture Diagram
@@ -43,7 +43,7 @@ This is an architecture diagram that depict pinterest end to end ETL process.
 
 - **Databricks:** Databricks is one of the formost tools for data cleaning, transformation, and analysis. It enables both batch and real-time processing modes, Databricks executes multiple programming languages e.g python, and SQL etc providing oppurtunity for profound insights hidden within the large amount of processed data.
 
-## Installation, Setup and Deployment
+## Installation Setup and Deployment
 Embarking on the journey to replicate and deploy the Pinterest Data Pipeline project entails a meticulous approach:
 
 **Python Environment Setup:** Lay the groundwork by setting up a Python environment with the necessary dependencies for executing Pinterest posting emulation and facilitating interactions with Kafka and AWS Kinesis.
