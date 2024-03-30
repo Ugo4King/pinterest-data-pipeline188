@@ -132,7 +132,8 @@ Navigate to the IAM console, and select Roles under the Access management sectio
 
 Under Trusted entity type, select AWS service, and under the Use case field select S3 in the Use cases for other AWS services field.
 
-create a policy and include the following json ```sh
+create a policy and include the following json 
+```sh
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -171,7 +172,9 @@ create a policy and include the following json ```sh
 }
 ```
 
-In the role that is just created, navigate to the Trust relationship and chose Trust entities and add the following trust policy ```sh
+In the role that is just created, navigate to the Trust relationship and chose Trust entities and add the following trust policy
+
+```sh
 {
     "Version": "2012-10-17",
     "Statement": [
