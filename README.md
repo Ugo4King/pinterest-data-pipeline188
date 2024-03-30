@@ -303,11 +303,11 @@ Develop notebooks for data cleaning, transformation, and analysis tasks using la
 Create jobs to schedule and execute these notebooks as batch processing tasks or set up streaming jobs for real-time processing.
 
 ## Key Scripts
-`user_posting_emulation.py` this Python scripts emulate Pinterest post data by extracting data from AWS RDBS and making a post request to API which has been configured to send the data to designated S3 bucket through Amazon MSK.
+[user_posting_emulation.py](user_posting_emulation.py) this Python scripts emulate Pinterest post data by extracting data from AWS RDBS and making a post request to API which has been configured to send the data to designated S3 bucket through Amazon MSK.
 
-`user_posting_emulation_streams.py` this is a python scripts that emulate pinterest post data by extracting data from AWS RDBS and making a post request to an API which has been configured to pass the post data to Amazon kinesis in a streaming format.
+[user_posting_emulation_streams.py](user_posting_emulation_streams.py) this is a python scripts that emulate pinterest post data by extracting data from AWS RDBS and making a post request to an API which has been configured to pass the post data to Amazon kinesis in a streaming format.
 
-`batch_data_processing_in_databricks.ipynb` this is a databricks notebook that mounts Amazon S3 boucket in DBFS and use pyspark to perform data cleaning on batch data in S3 bucket and write the cleaned data to Parquet table.
+[batch_data_processing_in_databricks.ipynb](batch_data_processing_in_databricks.ipynb) this is a databricks notebook that mounts Amazon S3 boucket in DBFS and use pyspark to perform data cleaning on batch data in S3 bucket and write the cleaned data to Parquet table.
 
 `stream_data_processing_in_databricks.ipynb` thia is a databricks notebook which connects to Amazon Kinesis, read the streaming data, perform some tranformation using pyspark and write the data to Delta table.
 
@@ -335,11 +335,11 @@ python user_posting_emulation_stream.py
 on your localhost to post the pinterest data to API through to Amazon Kinesis.
 
 **Airflow**
-Trigger the Aiflow DAGs run the databricks notebook `batch_data_processing_in_databricks.ipynb` for batch data processing
-the Aiflow DAGs will also run the stream databricks notebook `stream_dataprocessing_in_databricks.ipynb` for stream data processing and finally the data analysis task will run the `data_analysis.ipynb` to perfom the neccessary analysis for insight on the transformed data.
+Trigger the Aiflow DAGs run the databricks notebook [batch_data_processing_in_databricks.ipynb](batch_data_processing_in_databricks.ipynb) for batch data processing
+the Aiflow DAGs will also run the stream databricks notebook [stream_dataprocessing_in_databricks.ipynb](stream_dataprocessing_in_databricks.ipynb) for stream data processing and finally the data analysis task will run the [data_analysis.ipynb](data_analysis.ipynb) to perfom the neccessary analysis for insight on the transformed data.
 
 **Databricks**
-Schedule databricks job to run the batch notebook `batch_data_processing_in_databricks.ipynb` at the desired interval. similarly, use databricks job to trigger the stream notebook `stream_dataprocessing_in_databricks.ipynb` for stream data processing and then use the data analysis notebook to perform the neccessary SQL query to provide insight on the cleaned data.
+Schedule databricks job to run the batch notebook [batch_data_processing_in_databricks.ipynb](batch_data_processing_in_databricks.ipynb) at the desired interval. similarly, use databricks job to trigger the stream notebook [stream_dataprocessing_in_databricks.ipynb](stream_dataprocessing_in_databricks.ipynb) for stream data processing and then use the data analysis notebook to perform the neccessary SQL query to provide insight on the cleaned data.
 
 
 ## License:
