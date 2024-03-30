@@ -298,7 +298,7 @@ Create jobs to schedule and execute these notebooks as batch processing tasks or
 
 `user_posting_emulation_streams.py` this is a python scripts that emulate pinterest post data by extracting data from AWS RDBS and making a post request to an API which has been configured to pass the post data to Amazon kinesis in a streaming format.
 
-`batch_data_processing_in_databricks.ipynb` this is a databricks notebook that mounts Amazon S3 boucket in DBFS and use pyspark to perform data cleaning on batch data in S3 bucket and write the cleaned data to Delta table.
+`batch_data_processing_in_databricks.ipynb` this is a databricks notebook that mounts Amazon S3 boucket in DBFS and use pyspark to perform data cleaning on batch data in S3 bucket and write the cleaned data to Parquet table.
 
 `stream_data_processing_in_databricks.ipynb` thia is a databricks notebook which connects to Amazon Kinesis, read the streaming data, perform some tranformation using pyspark and write the data to Delta table.
 
