@@ -114,7 +114,13 @@ Once your API is defined,
 2. Choose the AWS region where your Amazon MSK cluster is deployed.
 3. Select "Managed Streaming for Apache Kafka" as the AWS service.
 4. Specify the Kafka cluster ARN and the Kafka topic to which you want to publish data.
-5. Choose Amazon S3 as the integration type and specify the details of the S3 bucket where data will be saved. ![dt](./image/api-1.png), ![dt](./image/api-2.png), ![dt](./image/api-3.png), ![dt](./image/api-4.png),![dt](./image/api-5.png),![dt](./image/api-6.png),![dt](./image/api-7.png),
+5. Choose Amazon S3 as the integration type and specify the details of the S3 bucket where data will be saved. !
+[dt](./image/api-1.png),  
+![dt](./image/api-3.png), 
+![dt](./image/api-4.png),
+![dt](./image/api-5.png),
+![dt](./image/api-6.png),
+![dt](./image/api-7.png),
 
 **S3 Bucket Configuration:**
 
