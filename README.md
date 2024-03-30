@@ -294,19 +294,23 @@ Create jobs to schedule and execute these notebooks as batch processing tasks or
 
 ## Key Scripts
 `user_posting_emulation.py` this Python scripts emulate Pinterest post data by extracting data from AWS RDBS and making a post request to API which has been configured to send the data to designated S3 bucket through Amazon MSK.
+
 `user_posting_emulation_streams.py` this is a python scripts that emulate pinterest post data by extracting data from AWS RDBS and making a post request to an API which has been configured to pass the post data to Amazon kinesis in a streaming format.
+
 `batch_data_processing_in_databricks.ipynb` this is a databricks notebook that mounts Amazon S3 boucket in DBFS and use pyspark to perform data cleaning on batch data in S3 bucket and write the cleaned data to Delta table.
+
 `stream_data_processing_in_databricks.ipynb` thia is a databricks notebook which connects to Amazon Kinesis, read the streaming data, perform some tranformation using pyspark and write the data to Delta table.
+
 `data_analysis.ipynb` this is a databricks notebook that use spark SQL to perform specific queries that provided insight on the tranformed data. 
 
-**Usage:**
+## Usage
 Clone the reposetory
 ```sh
 git clone https://github.com/Ugo4King/pinterest-data-pipeline188.git
 ```
 Run the user_posting_emulation.py tho mimik the pinterest data and post the data to API gateway which will be stored in S3 as batch data.
 
-**License:**
+## License:
 This project is licensed under [License]. For more details, please refer to the LICENSE.md file included in the project repository.
 
 
