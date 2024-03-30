@@ -308,9 +308,29 @@ Clone the reposetory
 ```sh
 git clone https://github.com/Ugo4King/pinterest-data-pipeline188.git
 ```
-Run the user_posting_emulation.py tho mimik the pinterest data and post the data to API gateway which will be stored in S3 as batch data.
+change to pinterest-data-pipeline188 directory
+```sh
+cd pinterest-data-pipeline188
+```
+Run the python script 
+```sh
+python user_posting_emulation.py
+``` 
+on your localhost to mimik the pinterest data and post the data to API gateway which will be stored in S3 as batch.
+
+Run the python script for stream data
+```sh
+python user_posting_emulation_stream.py
+``` 
+on your localhost to post the pinterest data to API through to Amazon Kinesis.
+
+**Airflow**
+Trigger the Aiflow DAGs run the databricks notebook `batch_data_processing_in_databricks.ipynb` for batch data processing
+the Aiflow DAGs will also run the stream databricks notebook `stream_dataprocessing_in_databricks.ipynb` for stream data processing and finally the data analysis task will run the `data_analysis.ipynb` to perfom the neccessary analysis for insight on the transformed data.
+
+**Databricks**
+Schedule databricks job to run the batch notebook `batch_data_processing_in_databricks.ipynb` at the desired interval. similarly, use databricks job to trigger the stream notebook `stream_dataprocessing_in_databricks.ipynb` for stream data processing and then use the data analysis notebook to perform the neccessary SQL query to provide insight on the cleaned data.
+
 
 ## License:
-This project is licensed under [License]. For more details, please refer to the LICENSE.md file included in the project repository.
-
-
+This project is licensed under [License](LICENSE.md). 
