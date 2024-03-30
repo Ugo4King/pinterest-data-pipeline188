@@ -4,28 +4,33 @@ import random
 import json
 import sqlalchemy
 from sqlalchemy import text
+import argparse
 
 random.seed(100)
 
-
 class AWSDBConnector:
-
-    def __init__(self):
-        self.HOST = "pinterestdbreadonly.cq2e8zno855e.eu-west-1.rds.amazonaws.com"
-        self.USER = 'project_user'
-        self.PASSWORD = ':t%;yCY3Yjg'
-        self.DATABASE = 'pinterest_data'
-        self.PORT = 3306
+    def __init__(self, host, user, password, database, port):
+        self.HOST = host
+        self.USER = user
+        self.PASSWORD = password
+        self.DATABASE = database
+        self.PORT = port
         
     def create_db_connector(self):
         engine = sqlalchemy.create_engine(f"mysql+pymysql://{self.USER}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DATABASE}?charset=utf8mb4")
         return engine
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Database Connector Arguments")
+    parser.add_argument("--host", type=str, help="Database host address")
+    parser.add_argument("--user", type=str, help="Database user")
+    parser.add_argument("--password", type=str, help="Database password")
+    parser.add_argument("--database", type=str, help="Database name")
+    parser.add_argument("--port", type=int, help="Database port")
+    return parser.parse_args()
 
-new_connector = AWSDBConnector()
-
-
-def run_infinite_post_data_loop():
+def run_infinite_post_data_loop(host, user, password, database, port):
+    new_connector = AWSDBConnector(host, user, password, database, port)
     while True:
         sleep(random.randrange(0, 2))
         random_row = random.randint(0, 11000)
@@ -105,5 +110,17 @@ def run_infinite_post_data_loop():
             print(response_user.json())
             print(response_pin.status_code, response_geo.status_code, response_user.status_code)
 
+def main():
+    args = parse_arguments()
+    host = args.host
+    user = args.user
+    password = args.password
+    database = args.database
+    port = args.port
+    
+    run_infinite_post_data_loop(host, user, password, database, port)
+    print('Working')
+
+
 if __name__ == "__main__":
-    run_infinite_post_data_loop()
+    main()
