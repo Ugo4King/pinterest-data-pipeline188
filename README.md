@@ -11,6 +11,9 @@ The Pinterest Data Pipeline project is a meticulously crafted system aimed at ex
 * [Key Components and Technologies](#Key-Components-and-Technologies)
 * [Installation Setup and Deployment](#Installation-Setup-and-Deployment)
 * [Integrate with Other Services](#Integrate-with-Other-Services)
+* [Key Scripts](#Key-Scripts)
+* [Usage](#Usage)
+* [License](#License)
 
 ## Architecture Diagram
 This is an architecture diagram that depict pinterest end to end ETL process.
@@ -102,7 +105,7 @@ Once your API is defined,
 
 ## Integrate with Other Services
 
-****Configuring Data Flow from API-MSK-S3:**
+**Configuring Data Flow from API-MSK-S3:**
 
 **API Gateway Integration:**
 
@@ -122,7 +125,8 @@ Navigate to the IAM console, and select Roles under the Access management sectio
 
 Under Trusted entity type, select AWS service, and under the Use case field select S3 in the Use cases for other AWS services field.
 
-create a policy and include the following json ```{
+create a policy and include the following json ```sh
+{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -157,9 +161,11 @@ create a policy and include the following json ```{
             "Resource": "*"
         }
     ]
-}```
+}
+```
 
-In the role that is just created, navigate to the Trust relationship and chose Trust entities and add the following trust policy ```{
+In the role that is just created, navigate to the Trust relationship and chose Trust entities and add the following trust policy ```sh
+{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -170,10 +176,12 @@ In the role that is just created, navigate to the Trust relationship and chose T
             "Action": "sts:AssumeRole"
         }
     ]
-}```
+}
+```
 Create a VPN endpoint to S3 and create a custom plugin by downloading the `Confluent.io Amazon S3 Connector` and then move it to the S3.
 
-```# assume admin user privileges
+```sh
+# assume admin user privileges
 sudo -u ec2-user -i
 # create directory where we will save our connector 
 mkdir kafka-connect-s3 && cd kafka-connect-s3
@@ -193,7 +201,8 @@ In the list of buckets, find the bucket where you upload the Confluent connector
 
 copy the following code into the connector configuration settings 
 
-```connector.class=io.confluent.connect.s3.S3SinkConnector
+```sh
+connector.class=io.confluent.connect.s3.S3SinkConnector
 # same region as our bucket and cluster
 s3.region=us-east-1
 flush.size=1
@@ -210,7 +219,7 @@ key.converter=org.apache.kafka.connect.storage.StringConverter
 s3.bucket.name=<BUCKET_NAME>
 ```
 
-**API Gateway Deployment:**
+**Deploying API to send data to S3**
 
 1. Deploy your API Gateway to make it publicly accessible.
 2. Test the API by sending data to the configured endpoint.
@@ -225,7 +234,11 @@ create a Trust relationship and in Trust entities add the following trust policy
 2. Configure your API Gateway resource to integrate with Amazon Kinesis using an HTTP integration.
     - Create resource ![dt](./image/api-1.png)
     - Name the resources streams ![dt](./image/api-R.png)
-    - edit the integration type to include: ![dt](./image/api-r1.png),![dt](./image/api-r2.png),![dt](./image/api-r3.png),![dt](./image/api-r4.png),
+    - edit the integration type to include: 
+    ![dt](./image/api-r1.png),
+    ![dt](./image/api-r2.png),
+    ![dt](./image/api-r3.png),
+    ![dt](./image/api-r4.png),
     - Create a child resources under the streams with resource name `{stream-name}`. ![dt](./image/api-r5.png),
     - under the child resources create the following resources: ![dt](./image/api-r6.png)
 
@@ -235,7 +248,8 @@ create a Trust relationship and in Trust entities add the following trust policy
 
 Configure the stream's permissions to allow write access from the API Gateway by ensuring that the following is included in the IAM policy.
 
-```{
+```sh
+{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -250,7 +264,7 @@ Configure the stream's permissions to allow write access from the API Gateway by
 }
 ```
 
-**API Gateway Deployment:**
+**API Gateway Deployment to send data to kinesis:**
 
 1. Deploy your API Gateway to make it publicly accessible.
 2. Test the API by sending data to the configured endpoint.
@@ -264,27 +278,33 @@ Databricks is utilized for data cleaning, transformation, and analysis tasks in 
 
 1. Navigate to the Azure Databricks portal.
 2. Create a new workspace and configure the workspace settings, including the Azure region, pricing tier, etc.
-3. Invite collaborators and set up access controls as needed. (**NB:** we are using an already created workspace)
+3. Invite collaborators and set up access controls as needed. 
+>(**NB:** we are using an already created workspace)
 
 **Create Clusters:**
 
 1. Create one or more Databricks clusters with the desired configurations (e.g., instance type, auto-scaling settings, etc.).
 2. Configure cluster access controls and permissions.
-(**NB:** we are using an already created cluster)
+>(**NB:** we are using an already created cluster)
 
 **Develop and Execute Jobs:**
 
-Develop notebooks for data cleaning, transformation, and analysis tasks using languages like Python.
+Develop notebooks for data cleaning, transformation, and analysis tasks using languages like Python and SQL.
 Create jobs to schedule and execute these notebooks as batch processing tasks or set up streaming jobs for real-time processing.
 
+## Key Scripts
+`user_posting_emulation.py` this Python scripts emulate Pinterest post data by extracting data from AWS RDBS and making a post request to API which has been configured to send the data to designated S3 bucket through Amazon MSK.
+`user_posting_emulation_streams.py` this is a python scripts that emulate pinterest post data by extracting data from AWS RDBS and making a post request to an API which has been configured to pass the post data to Amazon kinesis in a streaming format.
+`batch_data_processing_in_databricks.ipynb` this is a databricks notebook that mounts Amazon S3 boucket in DBFS and use pyspark to perform data cleaning on batch data in S3 bucket and write the cleaned data to Delta table.
+`stream_data_processing_in_databricks.ipynb` thia is a databricks notebook which connects to Amazon Kinesis, read the streaming data, perform some tranformation using pyspark and write the data to Delta table.
+`data_analysis.ipynb` this is a databricks notebook that use spark SQL to perform specific queries that provided insight on the tranformed data. 
+
 **Usage:**
-Once deployed, the Pinterest Data Pipeline project stands ready to revolutionize data processing and analysis:
-
-**Data Emulation and Extraction:** Emulate Pinterest post data and extract mission-critical information using meticulously crafted Python scripts.
-
-**Data Ingestion and Processing:** Ingest the extracted data into the system using either Kafka (for batch processing) or Amazon Kinesis (for real-time processing), fueling seamless processing and analysis.
-
-**Data Transformation and Analysis:** Embark on a journey of data transformation and analysis within Databricks, executing intricate SQL queries to unravel key metrics and unveil profound insights from the processed data, empowering stakeholders with actionable insights and facilitating data-driven decision-making.
+Clone the reposetory
+```sh
+git clone https://github.com/Ugo4King/pinterest-data-pipeline188.git
+```
+Run the user_posting_emulation.py tho mimik the pinterest data and post the data to API gateway which will be stored in S3 as batch data.
 
 **License:**
 This project is licensed under [License]. For more details, please refer to the LICENSE.md file included in the project repository.

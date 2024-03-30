@@ -56,16 +56,15 @@ def run_infinite_post_data_loop():
                 user_result = dict(row._mapping)
             
 
-            invoke_url = "https://gldssox2ei.execute-api.us-east-1.amazonaws.com/test-api"
+            invoke_url = "https://gldssox2ei.execute-api.us-east-1.amazonaws.com/test-api/topics/"
+            Batch_name_pin = "0e4753f224a7-pin"
+            Batch_name_geo = "0e4753f224a7-geo"
+            Batch_name_user = "0e4753f224a7-user"
+
             payload_pin = json.dumps({
                 "records": [
                     {
-                        "value":{"index": pin_result['index'], "unique_id": pin_result["unique_id"], "title": pin_result["title"], 
-                                 "description": pin_result["description"], "poster_name": pin_result["poster_name"], 
-                                 "follower_count": pin_result["follower_count"], "tag_list": pin_result["tag_list"], 
-                                 "is_image_or_video": pin_result["is_image_or_video"], "image_src": pin_result["image_src"], 
-                                 "downloaded": pin_result["downloaded"], "save_location": pin_result["save_location"], 
-                                 "category": pin_result["category"]}
+                        "value":pin_result
 
                     }
                 ]
@@ -87,16 +86,19 @@ def run_infinite_post_data_loop():
                     }
                 ]
             })
+            
             headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'}
-            response_pin = requests.request("POST", invoke_url.format("0e4753f224a7.pin"), headers=headers, data=payload_pin)
-            response_geo = requests.request("POST", invoke_url.format("0e4753f224a7.geo"), headers=headers, data=payload_geo)
-            response_user = requests.request("POST", invoke_url.format("0e4753f224a7.user"), headers=headers, data=payload_user)
-
-      
+            response_pin = requests.request("PUT", f"{invoke_url}{Batch_name_pin}", headers=headers, data=payload_pin)
+            response_geo = requests.request("PUT", f"{invoke_url}{Batch_name_geo}", headers=headers, data=payload_geo)
+            response_user = requests.request("PUT", f"{invoke_url}{Batch_name_user}", headers=headers, data=payload_user)
+            print(response_pin.json())
+            print(response_geo.json())
+            print(response_user.json())
 
 
 
 if __name__ == "__main__":
     run_infinite_post_data_loop()
     print('Working')
+    
     
